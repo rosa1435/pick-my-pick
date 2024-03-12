@@ -79,6 +79,7 @@ router.put('/posts/:postId', async (req, res, next) => {
 
         const updatedPost = await prisma.posts.update({
             data: {
+                id: true,
                 title: title,
                 content: content,
                 startDate: startDate,
