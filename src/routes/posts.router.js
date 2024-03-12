@@ -1,5 +1,4 @@
 import express from 'express';
-import express from 'express';
 import { prisma } from '../utils/prisma/index.js';
 
 const router = express.Router();
@@ -36,6 +35,9 @@ router.get('/posts', async (req, res, next) => {
             likeCount: true,
             commentsCount: true,
         },
+        orderBy: {
+            createdAt: 'desc',
+        },
     });
 
     return res.status(200).json({ data: postList });
@@ -69,17 +71,14 @@ router.get('/posts/:postId', async (req, res, next) => {
 router.put('/posts/:postId', async (req, res, next) => {
     try {
         const { postId } = req.params;
-        const { title, content, startDate, endDate, multiVote, updatedAt, userId } = req.body;
+        const { title, content, startDate, endDate, multiVote, updatedAt } = req.body;
         if (!postId || !title || !content) return res.status(400).json({ message: '데이터 형식이 올바르지 않습니다.' });
 
         const post = await prisma.posts.findFirst({ where: { id: +postId } });
         if (!post) return res.status(404).json({ message: '존재하지 않는 게시글입니다.' });
 
-        const user = await prisma.users.findFirst({ where: { id: +userId } });
-
         const updatedPost = await prisma.posts.update({
-            date: {
-                nickname: user.nickname,
+            data: {
                 title: title,
                 content: content,
                 startDate: startDate,
