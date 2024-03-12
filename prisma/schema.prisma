@@ -20,7 +20,7 @@ model Users {
   password String @map("password")
   
   posts       Posts[]
-  comments     Comments[]
+  comments    Comments[]
   options     Options[]
   voteHistory VoteHistory[]
 
@@ -43,7 +43,7 @@ model Posts {
   comments Comments[]
   options Options[]
 
-  user         Users  @relation(fields:[userId], references: [id], onDelete: Cascade)
+  
 
   @@map("Posts")
 }
