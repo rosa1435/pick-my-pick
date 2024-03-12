@@ -52,7 +52,7 @@ model Options{
   id           Int      @id @default(autoincrement()) @map("id")
   content      String   @map("content")
   count        Int      @map("count")
-  createdAt    DateTime @default(now()) @map("createdAt")
+
   postId       Int      @map("postId")
   userId       Int      @map("userId")
   voteId       Int      @map("voteId")
@@ -92,6 +92,7 @@ model VoteHistory {
 
 model Likes {
   id          Int      @id @default(autoincrement()) @map("id")
+  check       Boolean  @default(false)
 
   userId      Int @map("userId")
   postId      Int @map("postId")
