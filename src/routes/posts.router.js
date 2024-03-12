@@ -25,6 +25,7 @@ router.post('/posts', async (req, res, next) => {
 router.get('/posts', async (req, res, next) => {
     const postList = await prisma.posts.findMany({
         select: {
+            id: true,
             title: true,
             content: true,
             createdAt: true,
@@ -41,6 +42,28 @@ router.get('/posts', async (req, res, next) => {
 });
 
 // 게시글 상세 조회 API
+router.get('/posts/:postId', async (req, res, next) => {
+    const { postId } = req.params;
+
+    const post = await prisma.posts.findFirst({
+        where: { id: parseInt(postId) },
+        select: {
+            id: true,
+            title: true,
+            content: true,
+            startDate: true,
+            endDate: true,
+            multiVote: true,
+            // user: {
+            //     select: {
+            //         userName: true,
+            //         nickname: true
+            //     }
+            // }
+        },
+    });
+    return res.status(200).json({ post });
+});
 
 // 게시글 수정 API
 router.put('/posts/:postId', async (req, res, next) => {
