@@ -19,8 +19,8 @@ model Users {
   nickname String @map("nickname")
   password String @map("password")
   
-  posts       Posts[]
-  commets     Comments[]
+  
+  comments     Comments[]
   options     Options[]
   voteHistory VoteHistory[]
 
@@ -43,7 +43,7 @@ model Posts {
   commets Comments[]
   options Options[]
 
-  user         Users  @relation(fields:[userId], references: [id], onDelete: Cascade)
+  
 
   @@map("Posts")
 }
