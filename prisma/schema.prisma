@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id       Int    @id     @default(autoincrement()) @map("id")
+  userName String @unique @map("userName")
+  nickname String @map("nickname")
+  password String @map("password")
+  
+  posts       Posts[]
+  commets     Comments[]
+  options     Options[]
+  voteHistory VoteHistory[]
+
+  @@map("Users")
+}
+
+model Posts {           
+  id            Int       @id @default(autoincrement()) @map("id")
+  title         String    @map("title")
+  content       String    @db.Text @map("content")
+  createdAt     DateTime  @default(now()) @map("createdAt")
+  updatedAt     DateTime? @updatedAt @map("updatedAt")
+  startDate     DateTime  @map("startDate")
+  endDate       DateTime  @map("endDate")
+  multiVote     Boolean   @default(false) @map("multiVote")
+  likeCount     Int       @default(0) @map("likeCount")
+  commentsCount Int       @default(0) @map("commentsCount")
+  userId        Int       @map("userId")
+
+  commets Comments[]
+  options Options[]
+
+  user         Users  @relation(fields:[userId], references: [id], onDelete: Cascade)
+
+  @@map("Posts")
+}
+
+model Options{
+  id           Int      @id @default(autoincrement()) @map("id")
+  content      String   @map("content")
+  count        Int      @map("count")
+  createdAt    DateTime @default(now()) @map("createdAt")
+  postId       Int      @map("postId")
+  userId       Int      @map("userId")
+  voteId       Int      @map("voteId")
+
+  voteHistory VoteHistory[]
+  
+  post         Posts       @relation(fields:[postId], references: [id], onDelete: Cascade)
+  user         Users       @relation(fields:[userId], references: [id], onDelete: Cascade)
+}
+
+model Comments {
+  id          Int      @id @default(autoincrement()) @map("id")
+  content     String   @db.Text @map("content")
+  createdAt   DateTime @default(now()) @map("createdAt")
+
+  userId      Int @map("userId")
+  postId      Int @map("postId")
+
+  user        Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post        Posts @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@map("Comments")
+}
+
+model VoteHistory {
+  id          Int      @id @default(autoincrement()) @map("id")
+  userId      Int      @map("userId")
+  optionId    Int      @map("optionId")
+
+  user        Users   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  option      Options @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  @@map("voteHistory")
+}
