@@ -24,6 +24,7 @@ router.post('/posts', async (req, res, next) => {
 router.get('/posts', async (req, res,next) => {
     const postList = await prisma.posts.findMany({
         select: {
+            id : true,
             title: true,
             content: true,
             createdAt: true,
