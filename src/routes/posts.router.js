@@ -43,6 +43,7 @@ router.get('/posts', async (req, res, next) => {
     return res.status(200).json({ data: postList });
 });
 
+
 // 게시글 상세 조회 API
 router.get('/posts/:postId', async (req, res, next) => {
     const { postId } = req.params;
