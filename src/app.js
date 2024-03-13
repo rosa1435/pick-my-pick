@@ -1,13 +1,13 @@
-import express from "express";
-import postsRouter from "./routes/posts.router.js";
+import express from 'express';
+import postsRouter from './routes/posts.router.js';
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
 
-app.use("/", [postsRouter]);
+app.use('/', [postsRouter]);
 
 app.listen(PORT, () => {
-  console.log(PORT, "포트로 서버가 열렸어요!");
+    console.log(PORT, '포트로 서버가 열렸어요!');
 });

@@ -19,8 +19,8 @@ model Users {
   nickname String @map("nickname")
   password String @map("password")
   
-  
-  comments     Comments[]
+  posts       Posts[]
+  comments    Comments[]
   options     Options[]
   voteHistory VoteHistory[]
 
@@ -36,11 +36,11 @@ model Posts {
   startDate     DateTime  @map("startDate")
   endDate       DateTime  @map("endDate")
   multiVote     Boolean   @default(false) @map("multiVote")
-  likeCount     Int       @default(0) @map("likeCount")
+
   commentsCount Int       @default(0) @map("commentsCount")
   userId        Int       @map("userId")
 
-  commets Comments[]
+  comments Comments[]
   options Options[]
 
   
@@ -52,7 +52,7 @@ model Options{
   id           Int      @id @default(autoincrement()) @map("id")
   content      String   @map("content")
   count        Int      @map("count")
-  createdAt    DateTime @default(now()) @map("createdAt")
+
   postId       Int      @map("postId")
   userId       Int      @map("userId")
   voteId       Int      @map("voteId")
